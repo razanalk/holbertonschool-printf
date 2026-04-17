@@ -1,3 +1,4 @@
+#include "main.h"
 int print_number(int n)
 {
     int count = 0;
