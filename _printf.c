@@ -1,74 +1,24 @@
 #include "main.h"
 
-int _printf(const char *format, ...)
+int print_number(int n)
 {
-    va_list args;
-    int i = 0, count = 0;
+    int count = 0;
+    unsigned int num;
 
-    if (!format)
-        return (-1);
-
-    va_start(args, format);
-
-    while (format && format[i])
+    if (n < 0)
     {
-        if (format[i] == '%')
-        {
-            i++;
-
-            if (format[i] == '\0')
-            {
-                va_end(args);
-                return (-1);
-            }
-
-            if (format[i] == 'c')
-            {
-                _putchar(va_arg(args, int));
-                count++;
-            }
-            else if (format[i] == 's')
-            {
-                char *str = va_arg(args, char *);
-                int j = 0;
-
-                if (!str)
-                    str = "(null)";
-
-                while (str[j])
-                {
-                    _putchar(str[j]);
-                    j++;
-                    count++;
-                }
-            }
-            else if (format[i] == '%')
-            {
-                _putchar('%');
-                count++;
-            }
-            /* Handle integer conversion (%d and %i) */
-            else if (format[i] == 'd' || format[i] == 'i')
-            {
-                int num = va_arg(args, int);
-                print_number(num);
-            }
-            else
-            {
-                _putchar('%');
-                _putchar(format[i]);
-                count += 2;
-            }
-        }
-        else
-        {
-            _putchar(format[i]);
-            count++;
-        }
-
-        i++;
+        _putchar('-');
+        count++;
+        num = -n;
     }
+    else
+        num = n;
 
-    va_end(args);
-    return (count);
+    if (num / 10)
+        count += print_number(num / 10);
+
+    _putchar((num % 10) + '0');
+    count++;
+
+    return count;
 }
