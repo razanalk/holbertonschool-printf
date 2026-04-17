@@ -1,23 +1,21 @@
-#include "main.h"
-#include <unistd.h>
-
 int print_number(int n)
 {
     int count = 0;
-    char c;
+    unsigned int num;
 
     if (n < 0)
     {
-        write(1, "-", 1);
+        _putchar('-');
         count++;
-        n = -n;
+        num = -n;
     }
+    else
+        num = n;
 
-    if (n / 10)
-        count += print_number(n / 10);
+    if (num / 10)
+        count += print_number(num / 10);
 
-    c = (n % 10) + '0';
-    write(1, &c, 1);
+    _putchar((num % 10) + '0');
     count++;
 
     return count;
