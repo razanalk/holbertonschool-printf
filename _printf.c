@@ -1,69 +1,51 @@
 #include "main.h"
 
+/**
+ * _printf - Produces output according to a format string
+ * @format: Format string containing conversion specifiers
+ *
+ * Return: Number of characters printed, or -1 on error
+ */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int i = 0, count = 0;
+	va_list args;
+	int i = 0, count = 0;
 
-    if (!format)
-        return (-1);
+	/* Return (-1) if format string is NULL */
+	if (!format)
+		return (-1);
 
-    va_start(args, format);
+	/* Initialize variadic arguments */
+	va_start(args, format);
 
-    while (format[i])
-    {
-        if (format[i] == '%')
-        {
-            i++;
+	/* Loop through format string */
+	while (format[i])
+	{
+		/* Handle format specifiers */
+		if (format[i] == '%')
+		{
+			i++;
 
-            if (format[i] == '\0')
-                return (-1);
+			/* Return (-1) if '%' is last character */
+			if (format[i] == '\0')
+			{
+				va_end(args);
+				return (-1);
+			}
 
-            if (format[i] == 'c')
-            {
-                _putchar(va_arg(args, int));
-                count++;
-            }
-            else if (format[i] == 's')
-            {
-                char *str = va_arg(args, char *);
-                int j = 0;
+			count += handle_specifier(format[i], args);
+		}
+		else
+		{
+			/* Print regular character */
+			_putchar(format[i]);
+			count++;
+		}
 
-                if (!str)
-                    str = "(null)";
+		i++;
+	}
 
-                while (str[j])
-                {
-                    _putchar(str[j]);
-                    j++;
-                    count++;
-                }
-            }
-            else if (format[i] == '%')
-            {
-                _putchar('%');
-                count++;
-            }
-            else if (format[i] == 'd' || format[i] == 'i')
-            {
-                count += print_number(va_arg(args, int));
-            }
-            else
-            {
-                _putchar('%');
-                _putchar(format[i]);
-                count += 2;
-            }
-        }
-        else
-        {
-            _putchar(format[i]);
-            count++;
-        }
-
-        i++;
-    }
-
-    va_end(args);
-    return (count);
+	/* Clean up variadic arguments */
+	va_end(args);
+	return (count);
 }
